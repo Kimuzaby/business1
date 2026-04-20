@@ -163,7 +163,46 @@
             <h2>Tu Pedido</h2>
             <button class="btn-close" onclick="toggleCart()">✕</button>
         </div>
+        
         <div id="cart-items" class="cart-items-container"></div>
+
+        <div id="checkout-form" style="padding: 15px; border-top: 1px solid #ddd; background: #fafafa;">
+            <h3 style="margin-top: 0; font-size: 1.1em;">Datos de Entrega</h3>
+            
+            <label style="font-size: 0.9em; font-weight: bold;">Nombre del Cliente o Negocio:</label>
+            <input type="text" id="client-name" placeholder="Ej: Juan Pérez / Tienda La Bendición" style="width: 100%; margin-bottom: 12px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+
+            <label style="font-size: 0.9em; font-weight: bold;">Método de Entrega:</label>
+            <select id="delivery-method" onchange="toggleDeliveryFields()" style="width: 100%; margin-bottom: 12px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="">Seleccione una opción...</option>
+                <option value="delivery">Delivery (San Bartolo / Altavista / Otros)</option>
+                <option value="pickup">Recoger en local</option>
+            </select>
+
+            <div id="extra-details" style="display: none; background: #fff; padding: 10px; border: 1px solid #eee; border-radius: 4px; margin-bottom: 12px;">
+                <label id="detail-label" style="font-weight: bold; display: block; margin-bottom: 8px; font-size: 0.9em;">Detalles de la entrega:</label>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.8em; color: #555;">Día:</label>
+                        <input type="date" id="delivery-date" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.8em; color: #555;">Hora aprox:</label>
+                        <input type="time" id="delivery-time" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <label style="font-size: 0.8em; color: #555;">Referencia o Ubicación específica:</label>
+                <textarea id="location-details" placeholder="Ej: Frente a la despensa de Altavista..." style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: none;"></textarea>
+            </div>
+
+            <label style="font-size: 0.9em; font-weight: bold;">Método de Pago:</label>
+            <select id="payment-method" style="width: 100%; margin-bottom: 15px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+            </select>
+        </div>
         <div class="cart-footer">
             <button class="btn-empty" id="btn-empty" onclick="emptyCart()" style="display:none;">🗑️ Vaciar carrito</button>
             <div class="cart-total-row">
@@ -175,24 +214,6 @@
                 Confirmar y enviar pedido
             </button>
         </div>
-    <!-- Detalles -->
-        <div id="extra-details" style="display: none;">
-            <label id="detail-label" style="font-weight: bold; display: block; margin-top: 10px;">Detalles de la entrega:</label>
-    
-            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                <div style="flex: 1;">
-                    <label style="font-size: 0.8em;">Día:</label>
-                <input type="date" id="delivery-date" style="width: 100%;">
-            </div>
-            <div style="flex: 1;">
-                <label style="font-size: 0.8em;">Hora aproximada:</label>
-                <input type="time" id="delivery-time" style="width: 100%;">
-            </div>
-        </div>
-                <label style="font-size: 0.8em;">Referencia o Ubicación específica:</label>
-                <textarea id="location-details" placeholder="Ej: Frente a la despensa de Altavista..." style="width: 100%; margin-bottom: 10px;"></textarea>
-        </div>
-
     </aside>
     <script src="app.js"></script>
 </html>
