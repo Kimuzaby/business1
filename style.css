@@ -600,3 +600,16 @@
     min-height: 70px;
     margin-bottom: 0;
 }
+
+/* Nuevo contenedor que permite hacer scroll en todo el cuerpo de la barra lateral */
+.sidebar-body {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* El contenedor original ya no necesita manejar el scroll por sí solo */
+.cart-items-container {
+    padding: 20px 24px;
+}

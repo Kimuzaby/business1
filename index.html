@@ -164,46 +164,47 @@
         <button class="btn-close" onclick="toggleCart()">✕</button>
     </div>
     
-    <div id="cart-items" class="cart-items-container"></div>
+    <div class="sidebar-body">
+        <div id="cart-items" class="cart-items-container"></div>
 
-    <div id="checkout-form" class="checkout-form">
-        <h3>Datos de Entrega</h3>
-        
-        <label class="form-label" for="client-name">Nombre del Cliente o Negocio:</label>
-        <input type="text" id="client-name" class="form-input" placeholder="Ej: Juan Pérez / Tienda La Bendición">
-
-        <label class="form-label" for="delivery-method">Método de Entrega:</label>
-        <select id="delivery-method" class="form-input" onchange="toggleDeliveryFields()">
-            <option value="">Seleccione una opción...</option>
-            <option value="delivery">Delivery (San Bartolo / Altavista / Otros)</option>
-            <option value="pickup">Recoger en local</option>
-        </select>
-
-        <div id="extra-details" class="extra-details" style="display: none;">
-            <label id="detail-label" class="form-label">Detalles de la entrega:</label>
+        <div id="checkout-form" class="checkout-form">
+            <h3>Datos de Entrega</h3>
             
-            <div class="form-row">
-                <div class="form-col">
-                    <label class="form-label-sm" for="delivery-date">Día:</label>
-                    <input type="date" id="delivery-date" class="form-input">
+            <label class="form-label" for="client-name">Nombre del Cliente o Negocio:</label>
+            <input type="text" id="client-name" class="form-input" placeholder="Ej: Juan Pérez / Tienda La Bendición">
+
+            <label class="form-label" for="delivery-method">Método de Entrega:</label>
+            <select id="delivery-method" class="form-input" onchange="toggleDeliveryFields()">
+                <option value="">Seleccione una opción...</option>
+                <option value="delivery">Delivery (San Bartolo / Altavista / Otros)</option>
+                <option value="pickup">Recoger en local</option>
+            </select>
+
+            <div id="extra-details" class="extra-details" style="display: none;">
+                <label id="detail-label" class="form-label">Detalles de la entrega:</label>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label class="form-label-sm" for="delivery-date">Día:</label>
+                        <input type="date" id="delivery-date" class="form-input">
+                    </div>
+                    <div class="form-col">
+                        <label class="form-label-sm" for="delivery-time">Hora aprox:</label>
+                        <input type="time" id="delivery-time" class="form-input">
+                    </div>
                 </div>
-                <div class="form-col">
-                    <label class="form-label-sm" for="delivery-time">Hora aprox:</label>
-                    <input type="time" id="delivery-time" class="form-input">
-                </div>
+
+                <label class="form-label-sm" for="location-details">Referencia o Ubicación específica:</label>
+                <textarea id="location-details" class="form-input textarea-resize" placeholder="Ej: Frente a la despensa de Altavista..."></textarea>
             </div>
 
-            <label class="form-label-sm" for="location-details">Referencia o Ubicación específica:</label>
-            <textarea id="location-details" class="form-input textarea-resize" placeholder="Ej: Frente a la despensa de Altavista..."></textarea>
+            <label class="form-label" for="payment-method">Método de Pago:</label>
+            <select id="payment-method" class="form-input" style="margin-bottom: 0;">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+            </select>
         </div>
-
-        <label class="form-label" for="payment-method">Método de Pago:</label>
-        <select id="payment-method" class="form-input" style="margin-bottom: 0;">
-            <option value="Efectivo">Efectivo</option>
-            <option value="Transferencia">Transferencia</option>
-        </select>
     </div>
-
     <div class="cart-footer">
         <button class="btn-empty" id="btn-empty" onclick="emptyCart()" style="display:none;">🗑️ Vaciar carrito</button>
         <div class="cart-total-row">
