@@ -31,10 +31,22 @@ let cart = JSON.parse(localStorage.getItem('cart_dona_cristy')) || [];
  
         function emptyCart() {
             if (confirm("¿Estás seguro de que deseas vaciar tu carrito?")) {
-                cart = [];
-                saveAndRenderCart();
-            }
-        }
+             // Vaciar los productos
+            cart = [];
+            saveAndRenderCart();
+        
+        // Vaciar el formulario de entrega
+        document.getElementById('client-name').value = '';
+        document.getElementById('delivery-method').value = '';
+        document.getElementById('delivery-date').value = '';
+        document.getElementById('delivery-time').value = '';
+        document.getElementById('location-details').value = '';
+        document.getElementById('payment-method').value = 'Efectivo'; // Regresa al valor por defecto
+        
+        // Ocultar la sección dinámica de detalles
+        toggleDeliveryFields();
+    }
+}
  
         function saveAndRenderCart() {
             localStorage.setItem('cart_dona_cristy', JSON.stringify(cart));
@@ -124,17 +136,17 @@ async function sendWhatsApp() {
 
     // 3. Mensaje de WhatsApp
     const phone = "50366775753";
-    let messageText = `*PEDIDO NUEVO: ${clientName}* 🐷\n\n`;
+    let messageText = `PEDIDO NUEVO: ${clientName} \n\n`;
     cart.forEach(item => {
-        messageText += `▶ ${item.quantity}x ${item.name} - $${(item.price * item.quantity).toFixed(2)}\n`;
+        messageText += `-> ${item.quantity}x ${item.name} - $${(item.price * item.quantity).toFixed(2)}\n`;
     });
 
-    messageText += `\n*Total:* $${totalOrder}\n`;
-    messageText += `*Pago:* ${paymentMethod}\n`;
-    messageText += `*Entrega:* ${orderData.metodo_entrega}\n`;
-    messageText += `*Día:* ${deliveryDate}\n`;
-    messageText += `*Hora:* ${deliveryTime}\n`;
-    if (locationDetails) messageText += `*Ubicación:* ${locationDetails}\n`;
+    messageText += `\nTotal: $${totalOrder}\n`;
+    messageText += `Pago: ${paymentMethod}\n`;
+    messageText += `Entrega: ${orderData.metodo_entrega}\n`;
+    messageText += `Día: ${deliveryDate}\n`;
+    messageText += `Hora: ${deliveryTime}\n`;
+    if (locationDetails) messageText += `Ubicación: ${locationDetails}\n`;
     
     messageText += "\nPor favor confírmeme el pedido y las opciones de entrega. ¡Gracias!";
     

@@ -527,3 +527,76 @@
             .trust-grid { gap: 28px; }
             .logo-name { font-size: 1.1rem; }
         }
+
+        /* ── CHECKOUT FORM ── */
+.checkout-form {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+}
+
+.checkout-form h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-bottom: 16px;
+    font-family: 'Playfair Display', serif;
+}
+
+.form-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text);
+}
+
+.form-label-sm {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.form-input {
+    width: 100%;
+    margin-bottom: 16px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--white);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212,168,71,0.15); /* Brillo dorado al seleccionar */
+}
+
+.extra-details {
+    background: var(--white);
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.form-col {
+    flex: 1;
+}
+
+.textarea-resize {
+    resize: vertical; /* Permite al usuario hacer más grande la caja solo hacia abajo */
+    min-height: 70px;
+    margin-bottom: 0;
+}
