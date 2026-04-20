@@ -94,7 +94,7 @@ let cart = JSON.parse(localStorage.getItem('cart_dona_cristy')) || [];
 
 /* SendWhatsApp */
 
-async function sendWhatsApp() {
+function sendWhatsApp() {
     const clientName = document.getElementById('client-name').value;
     const deliveryMethod = document.getElementById('delivery-method').value;
     const deliveryDate = document.getElementById('delivery-date').value;
@@ -107,15 +107,8 @@ async function sendWhatsApp() {
         return;
     }
 
-    // Cambiar el estado del botón para que el usuario sepa que está cargando
-    const btnWhatsApp = document.getElementById('btn-whatsapp');
-    const originalBtnText = btnWhatsApp.innerHTML;
-    btnWhatsApp.innerHTML = "⏳ Procesando tu pedido...";
-    btnWhatsApp.disabled = true;
-
     const totalOrder = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
 
-    // 1. Objeto para la Data Maestra
     const orderData = {
         id_pedido: Date.now(),
         fecha_registro: new Date().toLocaleDateString(),
@@ -129,18 +122,6 @@ async function sendWhatsApp() {
         metodo_pago: paymentMethod
     };
 
-    // 2. Registro en Google Sheets via SheetDB
-    try {
-        await fetch('https://sheetdb.io/api/v1/0kw3e6o9cjq4d', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ data: [orderData] })
-        });
-    } catch (error) {
-        console.error("Error en registro:", error);
-    }
-
-    // 3. Mensaje de WhatsApp
     const phone = "50366775753";
     let messageText = `*PEDIDO NUEVO: ${clientName}* 🐷\n\n`;
     cart.forEach(item => {
@@ -158,11 +139,16 @@ async function sendWhatsApp() {
     
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(messageText)}`;
 
-    // Restaurar el botón (por si el usuario regresa a la página)
-    btnWhatsApp.innerHTML = originalBtnText;
-    btnWhatsApp.disabled = false;
+    // 1. Enviar a Google Sheets EN SEGUNDO PLANO
+    // El "keepalive: true" asegura que el envío se complete aunque el usuario cambie a WhatsApp
+    fetch('https://sheetdb.io/api/v1/0kw3e6o9cjq4d', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: [orderData] }),
+        keepalive: true 
+    }).catch(error => console.error("Error en registro:", error));
 
-    // LA MAGIA PARA MÓVILES: Redirigir en lugar de intentar abrir una pestaña nueva
+    // 2. Redirigir a WhatsApp INMEDIATAMENTE
     window.location.href = url;
 }
 
