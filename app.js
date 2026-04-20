@@ -107,9 +107,15 @@ async function sendWhatsApp() {
         return;
     }
 
+    // Cambiar el estado del botón para que el usuario sepa que está cargando
+    const btnWhatsApp = document.getElementById('btn-whatsapp');
+    const originalBtnText = btnWhatsApp.innerHTML;
+    btnWhatsApp.innerHTML = "⏳ Procesando tu pedido...";
+    btnWhatsApp.disabled = true;
+
     const totalOrder = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
 
-    // 1. Objeto para la Data Maestra (Columnas separadas)
+    // 1. Objeto para la Data Maestra
     const orderData = {
         id_pedido: Date.now(),
         fecha_registro: new Date().toLocaleDateString(),
@@ -136,21 +142,28 @@ async function sendWhatsApp() {
 
     // 3. Mensaje de WhatsApp
     const phone = "50366775753";
-    let messageText = `PEDIDO NUEVO: ${clientName} \n\n`;
+    let messageText = `*PEDIDO NUEVO: ${clientName}* 🐷\n\n`;
     cart.forEach(item => {
-        messageText += `-> ${item.quantity}x ${item.name} - $${(item.price * item.quantity).toFixed(2)}\n`;
+        messageText += `▶ ${item.quantity}x ${item.name} - $${(item.price * item.quantity).toFixed(2)}\n`;
     });
 
-    messageText += `\nTotal: $${totalOrder}\n`;
-    messageText += `Pago: ${paymentMethod}\n`;
-    messageText += `Entrega: ${orderData.metodo_entrega}\n`;
-    messageText += `Día: ${deliveryDate}\n`;
-    messageText += `Hora: ${deliveryTime}\n`;
-    if (locationDetails) messageText += `Ubicación: ${locationDetails}\n`;
+    messageText += `\n*Total:* $${totalOrder}\n`;
+    messageText += `*Pago:* ${paymentMethod}\n`;
+    messageText += `*Entrega:* ${orderData.metodo_entrega}\n`;
+    messageText += `*Día:* ${deliveryDate}\n`;
+    messageText += `*Hora:* ${deliveryTime}\n`;
+    if (locationDetails) messageText += `*Ubicación:* ${locationDetails}\n`;
     
     messageText += "\nPor favor confírmeme el pedido y las opciones de entrega. ¡Gracias!";
     
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(messageText)}`, '_blank');
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(messageText)}`;
+
+    // Restaurar el botón (por si el usuario regresa a la página)
+    btnWhatsApp.innerHTML = originalBtnText;
+    btnWhatsApp.disabled = false;
+
+    // LA MAGIA PARA MÓVILES: Redirigir en lugar de intentar abrir una pestaña nueva
+    window.location.href = url;
 }
 
 
