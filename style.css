@@ -421,15 +421,27 @@
         .overlay.active { visibility: visible; opacity: 1; }
  
         .sidebar {
-            position: fixed; top: 0; right: -460px;
-            width: 100%; max-width: 420px; height: 100vh;
-            background: var(--white);
-            z-index: 1001;
-            display: flex; flex-direction: column;
-            transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            border-left: 1px solid var(--border);
-        }
-        .sidebar.active { right: 0; }
+    position: fixed; 
+    top: 0; 
+    right: -460px;
+    width: 100%; 
+    max-width: 420px; 
+    height: 100dvh; 
+    background: var(--white);
+    z-index: 1001;
+    display: flex; 
+    flex-direction: column;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 1px solid var(--border);
+}
+
+.sidebar.active { right: 0; }
+
+.sidebar-body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; 
+}
  
         .sidebar-header {
             padding: 22px 24px;
@@ -488,10 +500,12 @@
         .item-price { font-weight: 700; color: var(--primary); font-size: 1.05rem; }
  
         .cart-footer {
-            padding: 20px 24px 28px;
-            background: #fafaf8;
-            border-top: 1px solid var(--border);
-        }
+    padding: 16px 24px calc(20px + env(safe-area-inset-bottom)); 
+    background: #fafaf8;
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.06); 
+    z-index: 10;
+}
  
         .btn-empty {
             width: 100%; background: transparent;
