@@ -79,18 +79,40 @@ let cart = JSON.parse(localStorage.getItem('cart_dona_cristy')) || [];
             cartTotalElement.innerText = `$${total.toFixed(2)}`;
         }
  
-        function sendWhatsApp() {
-            if (cart.length === 0) { alert("El carrito está vacío."); return; }
-            const phone = "50366775753";
-            let msg = "¡Hola! Quisiera hacer el siguiente pedido:\n\n";
-            let total = 0;
-            cart.forEach(item => {
-                const sub = item.price * item.quantity;
-                total += sub;
-                msg += `  • ${item.quantity}x ${item.name} — $${sub.toFixed(2)}\n`;
-            });
-            msg += `\nTotal: $${total.toFixed(2)}\n\nPor favor confírmeme el pedido y las opciones de entrega. ¡Gracias!`;
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
-        }
- 
-        window.onload = renderCartItems;
+async function sendWhatsApp() {
+    if (cart.length === 0) return;
+
+    // 1. Preparar el objeto de datos para la "Data Maestra"
+    const orderData = {
+        id_pedido: Date.now(), // Genera un ID único basado en el tiempo
+        fecha: new Date().toLocaleString(),
+        cliente: "Cliente Web", // Podrías agregar un input de nombre después
+        items: cart.map(item => `${item.quantity}x ${item.name}`).join(", "),
+        total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2),
+        metodo_entrega: "Pendiente definir" 
+    };
+
+    // 2. Enviar a Google Sheets de forma asíncrona
+    try {
+        await fetch('https://sheetdb.io/api/v1/TU_API_ID', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ data: [orderData] })
+        });
+        console.log("Datos guardados en reporte.");
+    } catch (error) {
+        console.error("Error al guardar datos:", error);
+    }
+
+    // 3. Proceder con el envío de WhatsApp original
+    const phone = "50366775753";
+    let messageText = "¡Hola Doña Cristy! \nQuisiera hacer el siguiente pedido:\n\n";
+    cart.forEach(item => {
+        const subtotal = item.price * item.quantity;
+        messageText += `▶ ${item.quantity}x ${item.name} - $${subtotal.toFixed(2)}\n`;
+    });
+    messageText += `\nTotal a pagar: $${orderData.total}\n`;
+    
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(messageText)}`;
+    window.open(url, '_blank');
+}
