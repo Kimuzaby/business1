@@ -94,7 +94,7 @@ async function sendWhatsApp() {
 
     // 2. Enviar a Google Sheets de forma asíncrona
     try {
-        await fetch('https://sheetdb.io/api/v1/TU_API_ID', {
+        await fetch('https://sheetdb.io/api/v1/0kw3e6o9cjq4d', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ data: [orderData] })
@@ -111,7 +111,9 @@ async function sendWhatsApp() {
         const subtotal = item.price * item.quantity;
         messageText += `▶ ${item.quantity}x ${item.name} - $${subtotal.toFixed(2)}\n`;
     });
-    messageText += `\nTotal a pagar: $${orderData.total}\n`;
+    
+    // Se agrega el total y el mensaje de confirmación
+    messageText += `\nTotal a pagar: $${orderData.total}\n\nPor favor confírmeme el pedido y las opciones de entrega. ¡Gracias!`;
     
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(messageText)}`;
     window.open(url, '_blank');
