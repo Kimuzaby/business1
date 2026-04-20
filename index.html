@@ -175,6 +175,24 @@
                 Confirmar y enviar pedido
             </button>
         </div>
+    <!-- Detalles -->
+        <div id="extra-details" style="display: none;">
+            <label id="detail-label" style="font-weight: bold; display: block; margin-top: 10px;">Detalles de la entrega:</label>
+    
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <div style="flex: 1;">
+                    <label style="font-size: 0.8em;">Día:</label>
+                <input type="date" id="delivery-date" style="width: 100%;">
+            </div>
+            <div style="flex: 1;">
+                <label style="font-size: 0.8em;">Hora aproximada:</label>
+                <input type="time" id="delivery-time" style="width: 100%;">
+            </div>
+        </div>
+                <label style="font-size: 0.8em;">Referencia o Ubicación específica:</label>
+                <textarea id="location-details" placeholder="Ej: Frente a la despensa de Altavista..." style="width: 100%; margin-bottom: 10px;"></textarea>
+        </div>
+
     </aside>
     <script src="app.js"></script>
 </html>

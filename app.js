@@ -79,42 +79,81 @@ let cart = JSON.parse(localStorage.getItem('cart_dona_cristy')) || [];
             cartTotalElement.innerText = `$${total.toFixed(2)}`;
         }
  
-async function sendWhatsApp() {
-    if (cart.length === 0) return;
 
-    // 1. Preparar el objeto de datos para la "Data Maestra"
+/* SendWhatsApp */
+
+async function sendWhatsApp() {
+    const clientName = document.getElementById('client-name').value;
+    const deliveryMethod = document.getElementById('delivery-method').value;
+    const deliveryDate = document.getElementById('delivery-date').value;
+    const deliveryTime = document.getElementById('delivery-time').value;
+    const locationDetails = document.getElementById('location-details').value;
+    const paymentMethod = document.getElementById('payment-method').value;
+
+    if (cart.length === 0 || !clientName || !deliveryMethod || !deliveryDate || !deliveryTime) {
+        alert("Por favor completa todos los campos de contacto y fecha.");
+        return;
+    }
+
+    const totalOrder = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
+
+    // 1. Objeto para la Data Maestra (Columnas separadas)
     const orderData = {
-        id_pedido: Date.now(), // Genera un ID único basado en el tiempo
-        fecha: new Date().toLocaleString(),
-        cliente: "Cliente Web", // Podrías agregar un input de nombre después
+        id_pedido: Date.now(),
+        fecha_registro: new Date().toLocaleDateString(),
+        cliente: clientName,
         items: cart.map(item => `${item.quantity}x ${item.name}`).join(", "),
-        total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2),
-        metodo_entrega: "Pendiente definir" 
+        total: totalOrder,
+        metodo_entrega: deliveryMethod === "delivery" ? "A domicilio" : "Recoger en local",
+        dia_entrega: deliveryDate,
+        hora_entrega: deliveryTime,
+        ubicacion: locationDetails,
+        metodo_pago: paymentMethod
     };
 
-    // 2. Enviar a Google Sheets de forma asíncrona
+    // 2. Registro en Google Sheets via SheetDB
     try {
         await fetch('https://sheetdb.io/api/v1/0kw3e6o9cjq4d', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ data: [orderData] })
         });
-        console.log("Datos guardados en reporte.");
     } catch (error) {
-        console.error("Error al guardar datos:", error);
+        console.error("Error en registro:", error);
     }
 
-    // 3. Proceder con el envío de WhatsApp original
+    // 3. Mensaje de WhatsApp
     const phone = "50366775753";
-    let messageText = "¡Hola Doña Cristy! \nQuisiera hacer el siguiente pedido:\n\n";
+    let messageText = `*PEDIDO NUEVO: ${clientName}* 🐷\n\n`;
     cart.forEach(item => {
-        const subtotal = item.price * item.quantity;
-        messageText += `▶ ${item.quantity}x ${item.name} - $${subtotal.toFixed(2)}\n`;
+        messageText += `▶ ${item.quantity}x ${item.name} - $${(item.price * item.quantity).toFixed(2)}\n`;
     });
+
+    messageText += `\n*Total:* $${totalOrder}\n`;
+    messageText += `*Pago:* ${paymentMethod}\n`;
+    messageText += `*Entrega:* ${orderData.metodo_entrega}\n`;
+    messageText += `*Día:* ${deliveryDate}\n`;
+    messageText += `*Hora:* ${deliveryTime}\n`;
+    if (locationDetails) messageText += `*Ubicación:* ${locationDetails}\n`;
     
-    // Se agrega el total y el mensaje de confirmación
-    messageText += `\nTotal a pagar: $${orderData.total}\n\nPor favor confírmeme el pedido y las opciones de entrega. ¡Gracias!`;
+    messageText += "\nPor favor confírmeme el pedido y las opciones de entrega. ¡Gracias!";
     
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(messageText)}`;
-    window.open(url, '_blank');
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(messageText)}`, '_blank');
+}
+
+
+/* Toggle para el delivery */
+
+
+function toggleDeliveryFields() {
+    const method = document.getElementById('delivery-method').value;
+    const detailsDiv = document.getElementById('extra-details');
+    const label = document.getElementById('detail-label');
+
+    if (method === "") {
+        detailsDiv.style.display = "none";
+    } else {
+        detailsDiv.style.display = "block";
+        label.innerText = method === "delivery" ? "Programación del Delivery:" : "Programación de Retiro en Local:";
+    }
 }
