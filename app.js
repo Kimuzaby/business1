@@ -123,16 +123,16 @@ function sendWhatsApp() {
     };
 
     const phone = "50366775753";
-    let messageText = `*PEDIDO NUEVO: ${clientName}* 🐷\n\n`;
+    let messageText = `PEDIDO NUEVO: ${clientName}\n\n`;
     cart.forEach(item => {
         messageText += `▶ ${item.quantity}x ${item.name} - $${(item.price * item.quantity).toFixed(2)}\n`;
     });
 
-    messageText += `\n*Total:* $${totalOrder}\n`;
-    messageText += `*Pago:* ${paymentMethod}\n`;
-    messageText += `*Entrega:* ${orderData.metodo_entrega}\n`;
-    messageText += `*Día:* ${deliveryDate}\n`;
-    messageText += `*Hora:* ${deliveryTime}\n`;
+    messageText += `\nTotal: $${totalOrder}\n`;
+    messageText += `Pago: ${paymentMethod}\n`;
+    messageText += `Entrega: ${orderData.metodo_entrega}\n`;
+    messageText += `Día: ${deliveryDate}\n`;
+    messageText += `Hora: ${deliveryTime}\n`;
     if (locationDetails) messageText += `*Ubicación:* ${locationDetails}\n`;
     
     messageText += "\nPor favor confírmeme el pedido y las opciones de entrega. ¡Gracias!";
